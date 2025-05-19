@@ -2,10 +2,10 @@ import os
 from pyspark.sql import SparkSession
 from dotenv import load_dotenv
 
-from config import setup_logging
+from config import Log
 
 # Set up logging at the module level
-logger = setup_logging()
+logger = Log.setup_logging()
 
 class LoadCreds:
 
@@ -114,7 +114,7 @@ class SparkLoader:
 
 if __name__ == "__main__":
     try:
-        logger = setup_logging()
+        logger = Log.setup_logging()
         logger.info("Starting data ingestion process")
         spark = SparkLoader()
         bank_df = spark.load_dataframes()
