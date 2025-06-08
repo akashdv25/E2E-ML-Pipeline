@@ -1,0 +1,108 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: ./venv311/bin/python src/pipeline/ingestion.py
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 3457f88c8809b1f69ec5c3dd1ba04a69
+      size: 1610
+    - path: src/pipeline/ingestion.py
+      hash: md5
+      md5: 02652f7ff8c7015881fa957b427e822b
+      size: 5319
+    outs:
+    - path: data/raw/Bank_churn.csv
+      hash: md5
+      md5: cf87506c5be947a5cda69511b2bf3ef3
+      size: 561600
+  preprocess:
+    cmd: ./venv311/bin/python src/pipeline/pre_processing.py
+    deps:
+    - path: data/raw/Bank_churn.csv
+      hash: md5
+      md5: cf87506c5be947a5cda69511b2bf3ef3
+      size: 561600
+    - path: params.yaml
+      hash: md5
+      md5: 3457f88c8809b1f69ec5c3dd1ba04a69
+      size: 1610
+    - path: src/pipeline/pre_processing.py
+      hash: md5
+      md5: 84e555a1639b3c80fcfe8f32cc3f4b34
+      size: 7426
+    outs:
+    - path: data/processed/bank_churn_processed.csv
+      hash: md5
+      md5: 8b6203ded3b4516daedb20c64c4ccbd1
+      size: 469159
+  feature_engineering:
+    cmd: ./venv311/bin/python src/pipeline/feature_engineering.py
+    deps:
+    - path: data/processed/bank_churn_processed.csv
+      hash: md5
+      md5: 8b6203ded3b4516daedb20c64c4ccbd1
+      size: 469159
+    - path: params.yaml
+      hash: md5
+      md5: 3457f88c8809b1f69ec5c3dd1ba04a69
+      size: 1610
+    - path: src/pipeline/feature_engineering.py
+      hash: md5
+      md5: 790d115292e2a223ff815f94f26214d6
+      size: 12000
+    outs:
+    - path: data/model_data/test_data.parquet.parquet
+      hash: md5
+      md5: d90183ee091fd7377e1b92dac450985f
+      size: 132669
+    - path: data/model_data/train_data.parquet.parquet
+      hash: md5
+      md5: f14fecbd14c8301d5b9cf5c0d71703c0
+      size: 527364
+  train:
+    cmd: ./venv311/bin/python src/pipeline/model_train.py
+    deps:
+    - path: data/model_data/train_data.parquet.parquet
+      hash: md5
+      md5: f14fecbd14c8301d5b9cf5c0d71703c0
+      size: 527364
+    - path: params.yaml
+      hash: md5
+      md5: 3457f88c8809b1f69ec5c3dd1ba04a69
+      size: 1610
+    - path: src/pipeline/model_train.py
+      hash: md5
+      md5: 735928f4a7dcd345a65fe54f1dd0b9ca
+      size: 3568
+    outs:
+    - path: artifacts/random_forest_model
+      hash: md5
+      md5: 2923c1e9a2b9b6dfd321f86dc4f1afdb.dir
+      size: 842062
+      nfiles: 12
+  evaluate:
+    cmd: ./venv311/bin/python src/pipeline/eval.py
+    deps:
+    - path: artifacts/random_forest_model
+      hash: md5
+      md5: 2923c1e9a2b9b6dfd321f86dc4f1afdb.dir
+      size: 842062
+      nfiles: 12
+    - path: data/model_data/test_data.parquet.parquet
+      hash: md5
+      md5: d90183ee091fd7377e1b92dac450985f
+      size: 132669
+    - path: params.yaml
+      hash: md5
+      md5: 3457f88c8809b1f69ec5c3dd1ba04a69
+      size: 1610
+    - path: src/pipeline/eval.py
+      hash: md5
+      md5: fd7e0acd49b8ac322ea9ac503e0d2943
+      size: 5158
+    outs:
+    - path: metrics/model_metrics.json
+      hash: md5
+      md5: 5711084befb8168ae6610cdbe60c4f03
+      size: 618

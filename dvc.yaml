@@ -1,6 +1,6 @@
 stages:
   ingest:
-    cmd: python3 src/pipeline/ingestion.py
+    cmd: ./venv311/bin/python src/pipeline/ingestion.py
     deps:
       - src/pipeline/ingestion.py
       - params.yaml
@@ -8,7 +8,7 @@ stages:
       - data/raw/Bank_churn.csv
 
   preprocess:
-    cmd: python3 src/pipeline/pre_processing.py
+    cmd: ./venv311/bin/python src/pipeline/pre_processing.py
     deps:
       - src/pipeline/pre_processing.py
       - data/raw/Bank_churn.csv
@@ -17,7 +17,7 @@ stages:
       - data/processed/bank_churn_processed.csv
 
   feature_engineering:
-    cmd: python3 src/pipeline/feature_engineering.py
+    cmd: ./venv311/bin/python src/pipeline/feature_engineering.py
     deps:
       - src/pipeline/feature_engineering.py
       - data/processed/bank_churn_processed.csv
@@ -27,7 +27,7 @@ stages:
       - data/model_data/test_data.parquet.parquet
 
   train:
-    cmd: python3 src/pipeline/model_train.py
+    cmd: ./venv311/bin/python src/pipeline/model_train.py
     deps:
       - src/pipeline/model_train.py
       - data/model_data/train_data.parquet.parquet
@@ -36,7 +36,7 @@ stages:
       - artifacts/random_forest_model
 
   evaluate:
-    cmd: python3 src/pipeline/eval.py
+    cmd: ./venv311/bin/python src/pipeline/eval.py
     deps:
       - src/pipeline/eval.py
       - data/model_data/test_data.parquet.parquet

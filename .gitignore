@@ -135,6 +135,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+myvenv/
 
 # Spyder project settings
 .spyderproject
@@ -179,3 +180,9 @@ myvenv
 *.log
 *.log.*
 logging-info/
+data/
+venv311/
+artifacts/
+metrics/
+setup.py
+e2e_ml_pipeline.egg-info/
