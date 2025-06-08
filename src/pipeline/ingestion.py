@@ -61,22 +61,40 @@ class SparkLoader:
     """
 
     # Initialize the class
-    def __init__(self, app_name='Bank Churn Prediction'):
+    def __init__(self, app_name=' Bank Churn Prediction'):
+
+        logger.info(f"Initializing SparkLoader Class with app_name : {app_name} and creating Spark session",stacklevel=2)
+
+        # Load the credentials from the .env file
+        self.creds = LoadCreds()
+        
+        # Initialize AWS S3 client
+        self.s3_client = boto3.client(
+            's3',
+            aws_access_key_id=self.creds.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=self.creds.AWS_SECRET_ACCESS_KEY,
+            region_name=self.creds.AWS_REGION
+        )
+
         try:
-            # Set Java home to system Java
-            os.environ['JAVA_HOME'] = '/usr/lib/jvm/default-java'
-            
-            # Create Spark session
+            logger.debug("Creating Spark session...",stacklevel=2)
+        
+            # Create the Spark session
             self.spark = SparkSession.builder \
                 .appName(app_name) \
-                .config("spark.driver.memory", "2g") \
-                .config("spark.executor.memory", "2g") \
+                .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.2") \
+                .config("spark.hadoop.fs.s3a.access.key", self.creds.AWS_ACCESS_KEY_ID) \
+                .config("spark.hadoop.fs.s3a.secret.key", self.creds.AWS_SECRET_ACCESS_KEY) \
+                .config("spark.hadoop.fs.s3a.endpoint", f"s3.{self.creds.AWS_REGION}.amazonaws.com") \
+                .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
                 .getOrCreate()
             
-            logger.info("SparkSession created successfully", stacklevel=2)
+            self.bucket_name = self.creds.S3_BUCKET_NAME
             
+            logger.info("Spark Session created successfully",stacklevel=2)        
+        
         except Exception as e:
-            logger.error(f"Error creating SparkSession: {str(e)}", stacklevel=2)
+            logger.error(f"Error creating Spark session: {str(e)}",stacklevel=2)
             raise e
 
 
