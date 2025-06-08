@@ -1,0 +1,73 @@
+ingestion:
+  raw_data_path: "data/raw"
+  raw_data_file: "Bank_churn.csv"
+
+pre_processing:
+  processed_data_path: "data/processed"
+  processed_data_file: "bank_churn_processed.csv"
+  columns_to_drop:
+    - "customer_id"
+  filter_conditions:
+    - column: "estimated_salary"
+      value: 11.58
+      operator: "!="
+
+feature_engineering:
+  input_path: "data/processed"
+  input_file: "bank_churn_processed.csv"
+  output_path: "data/model_data"
+  train_file: "train_data.parquet"
+  test_file: "test_data.parquet"
+  test_size: 0.2
+  random_seed: 42
+  categorical_columns:
+    - "country"
+    - "gender"
+  derived_features:
+    age_related:
+      - "age_group"
+      - "is_senior"
+    balance_related:
+      - "balance_category"
+      - "balance_salary_ratio"
+    product_related:
+      - "product_engagement_score"
+      - "is_multi_product"
+    tenure_related:
+      - "tenure_group"
+      - "avg_balance_per_tenure"
+    credit_related:
+      - "credit_score_category"
+      - "credit_balance_ratio"
+    customer_value:
+      - "customer_value_score"
+      - "risk_score"
+      - "activity_level"
+
+model_training:
+  input_path: "data/model_data"
+  train_data: "train_data.parquet.parquet"
+  artifacts_path: "artifacts"
+  model_name: "random_forest_model"
+  random_forest:
+    num_trees: 100
+    max_depth: 10
+    seed: 42
+    feature_subset_strategy: "auto"
+    impurity: "gini"
+
+evaluation:
+  test_data: "test_data.parquet.parquet"
+  metrics_path: "metrics"
+  metrics_file: "model_metrics.json"
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1"
+    - "roc_auc"
+    - "confusion_matrix"
+
+  
+
+
