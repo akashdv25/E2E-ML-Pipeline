@@ -2,3 +2,4 @@
     remote = myremote
 ['remote "myremote"']
     url = s3://e2e-ml-pipeline-bucket/
+    region = ap-south-1
