@@ -162,6 +162,9 @@ This will execute all stages defined in `dvc.yaml`:
 - 🔄 Regular retraining pipeline
 - 📈 Data drift detection
 
+##  Medium Blog
+[Project Blog](https://medium.com/@akashanandani.56/building-an-end-to-end-ml-pipeline-for-bank-customer-churn-prediction-9c754162e8d3)
+
 ## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
