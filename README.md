@@ -126,13 +126,8 @@ This will execute all stages defined in `dvc.yaml`:
 ```
 .
 ├── .dvc/                 # 📦 DVC configuration
-├── .env                  # 🔑 Environment variables (git-ignored)
+├── .env                  # 🔑 Environment variables 
 ├── app/                  # ⚡ FastAPI application (planned)
-├── artifacts/           # 💾 Model artifacts
-├── data/               # 📊 Data directory
-│   ├── raw/           # 📥 Raw data
-│   └── processed/     # 🧹 Processed data
-├── metrics/           # 📈 Model metrics
 ├── src/              # 💻 Source code
 ├── dvc.yaml          # 🔄 DVC pipeline definition
 ├── params.yaml       # ⚙️ Parameters for all stages
